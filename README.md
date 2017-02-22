@@ -69,7 +69,7 @@ We obtain the following plot:
 
 #### Question 2 We wish to analyze pairwise distances between selected conformations. Since N precludes using all pairs, propose two procedures to:
 
-* select a subset S1 of n conformations by retaining the low energy conformations only. Hint: you may use topological persistence, see e.g. [CDM+15].
+# * select a subset S1 of n conformations by retaining the low energy conformations only. Hint: you may use topological persistence, see e.g. [CDM+15].
 
 
 
