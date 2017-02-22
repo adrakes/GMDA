@@ -1,5 +1,5 @@
 # Geometric-Methods-in-Data-Analysis
-## Circumventing the Disteance Concentration Phenomena
+## Circumventing the Distance Concentration Phenomena
  
 Description. Several strategies can be developed to deal with distance concentration phenomena. One of
 them, seen in class, consists in using suitable norms, and to project to lower dimensional spaces. Another one,
