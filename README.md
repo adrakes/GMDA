@@ -26,9 +26,9 @@ idx = np.argpartition(E_S, 10)
 # T is the corresponding matrix of coordinates
 T = S[idx[0:10],]
 ```
-We obtain the [the following](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/data/10_local_minima.txt) list of protein:
+We obtain [this](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/data/10_local_minima.txt) set T of protein
 
-We run the SBL - Conformational Analysis package with the resulting matrix T using the following command lines:
+We run the SBL - Conformational Analysis package with set T using the following command line:
 ```
 sbl-conf-ensemble-analysis-lrmsd.exe --points-file /home/cloudera/Shared/10_local_minima.txt --pairwise-distances
 ```
@@ -78,10 +78,19 @@ In order to generate S1 we used "Cluster Analysis" package from the SBL library
 ./sbl-cluster-MTB-euclid.exe --points-file /home/cloudera/GMDA/hybrid-TRRT-BH-BLN__minima.txt --num-neighbors=20 --persistence-threshold=.1 --verbose 
 ```
 
+The algorithm ran for ~ 15 mins and produced ... 
 ``` 
 General Statistics:
 
 Times elapsed for computations (in seconds):
 -- Cluster Engine: 938.920263
 Total: 938.920263
+```
+
+* select a subset S2 of n conformations maximizing the distances between the conformations selected. Hint: you may use the smart seeding procedure used in k-means.
+
+In order to find the Fermat-Weber points, we need to find the nearest neighbours of the centroids. To do so, we use the following code:
+```python
+Include Flavie's code here
+
 ```
