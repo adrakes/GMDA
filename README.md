@@ -62,5 +62,6 @@ plt.savefig('MDS_Q1.png')
 Here we used a seed in order to be able to compare our results later in the project once we have applied the sketch-map method.
 
 We obtain the following plot: 
+
 ![mds_plot](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/img/MDS_Q1.png)
 
