@@ -26,6 +26,8 @@ idx = np.argpartition(E_S, 10)
 # T is the corresponding matrix of coordinates
 T = S[idx[0:10],]
 ```
+We obtain the following list of protein:
+![T](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/data/10_local_minima.txt)
 
 We run the SBL - Conformational Analysis package with the resulting matrix T using the following command lines:
 ```
@@ -61,7 +63,7 @@ plt.savefig('MDS_Q1.png')
 ```
 Here we used a seed in order to be able to compare our results later in the project once we have applied the sketch-map method.
 
-You can find the full code relative to this question [here](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/code/Project_Notebook.ipynb)
+You can find the full code relative to this question [here](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/code/Question1_Notebook.ipynb)
 
 We obtain the following plot: 
 
@@ -69,7 +71,18 @@ We obtain the following plot:
 
 #### Question 2 We wish to analyze pairwise distances between selected conformations. Since N precludes using all pairs, propose two procedures to:
 
-# * select a subset S1 of n conformations by retaining the low energy conformations only. Hint: you may use topological persistence, see e.g. [CDM+15].
+* select a subset S1 of n conformations by retaining the low energy conformations only. Hint: you may use topological persistence, see e.g. [CDM+15].
 
+In order to generate S1 we used "Cluster Analysis" package from the SBL library
 
+```
+./sbl-cluster-MTB-euclid.exe --points-file /home/cloudera/GMDA/hybrid-TRRT-BH-BLN__minima.txt --num-neighbors=20 --persistence-threshold=.1 --verbose 
+```
 
+``` 
+General Statistics:
+
+Times elapsed for computations (in seconds):
+-- Cluster Engine: 938.920263
+Total: 938.920263
+```
