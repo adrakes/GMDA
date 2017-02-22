@@ -1,5 +1,5 @@
 # Geometric-Methods-in-Data-Analysis
- Circumventing the Disteance Concentration Phenomena
+## Circumventing the Disteance Concentration Phenomena
  
 Description. Several strategies can be developed to deal with distance concentration phenomena. One of
 them, seen in class, consists in using suitable norms, and to project to lower dimensional spaces. Another one,
@@ -27,9 +27,9 @@ idx = np.argpartition(E_S, 10)
 T = S[idx[0:10],]
 ```
 
-We run the SBL - Molecular Distance package with the resulting matrix T using the follwing command lines:
+We run the SBL - Conformational Analysis package with the resulting matrix T using the following command lines:
 ```
-
+sbl-conf-ensemble-analysis-lrmsd.exe --points-file /home/cloudera/Shared/10_local_minima.txt --pairwise-distances
 ```
 
 Using the output text file obtained we run a multi-dimentional scaling in sklearn: 
@@ -61,7 +61,15 @@ plt.savefig('MDS_Q1.png')
 ```
 Here we used a seed in order to be able to compare our results later in the project once we have applied the sketch-map method.
 
+You can find the full code relative to this question [here](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/upload/master/code)
+
 We obtain the following plot: 
 
 ![mds_plot](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/img/MDS_Q1.png)
+
+#### Question 2 We wish to analyze pairwise distances between selected conformations. Since N precludes using all pairs, propose two procedures to:
+
+* select a subset S1 of n conformations by retaining the low energy conformations only. Hint: you may use topological persistence, see e.g. [CDM+15].
+
+
 
