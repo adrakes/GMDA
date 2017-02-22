@@ -13,14 +13,10 @@ use the least root mean square deviation http://sbl.inria.fr/doc/Molecular_dista
 html.
 
 N.B on workflow: 
-For this project we chose to use the ad-hoc SBL applications provided at http://sbl.inria.fr/applications rather than compiling the entire SBL library which happens to be quite challenging. Therefore we have run several different packages on a VM ubuntu which we combined with some python code to master the given tasks.
+For this project we chose to use the pre-complied static SBL programs provided at http://sbl.inria.fr/applications rather than compiling the entire SBL library which happens to be quite challenging. Therefore we have run several different packages on a VM ubuntu which we combined with some python code to answer the given tasks.
 
 #### Question 1 
-#### An ensemble of N  10^6 local minima of the BLN69 protein model can be found at http://sbl.
-#### inria.fr/data-models. This set is denoted S in the sequel. To get familiar with this data set, select
-#### a reasonable number of local minima with low energy, and display them in 2D using multi-dimensional
-#### scaling (MDS). For example, you may focus on the 10 lowest local minina. This set is denoted T in
-#### the sequel.
+#### An ensemble of N  10^6 local minima of the BLN69 protein model can be found at http://sbl.inria.fr/data-models. This set is denoted S in the sequel. To get familiar with this data set, select a reasonable number of local minima with low energy, and display them in 2D using multi-dimensional scaling (MDS). For example, you may focus on the 10 lowest local minina. This set is denoted T in the sequel.
 
 In order to generate set T, we import set S and choose the 10 proteins with the lowest associated energies:
 ```python
@@ -64,3 +60,7 @@ plt.title("2D MDS on 10 lowest local minima of BNL69")
 plt.savefig('MDS_Q1.png')
 ```
 Here we used a seed in order to be able to compare our results later in the project once we have applied the sketch-map method.
+
+We obtain the following plot: 
+![mds_plot](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/img/MDS_Q1.png)
+
