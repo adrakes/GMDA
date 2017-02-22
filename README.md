@@ -26,8 +26,7 @@ idx = np.argpartition(E_S, 10)
 # T is the corresponding matrix of coordinates
 T = S[idx[0:10],]
 ```
-We obtain the following list of protein:
-![T](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/data/10_local_minima.txt)
+We obtain the [the following](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/data/10_local_minima.txt) list of protein:
 
 We run the SBL - Conformational Analysis package with the resulting matrix T using the following command lines:
 ```
