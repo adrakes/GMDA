@@ -42,7 +42,7 @@ from adjustText import adjust_text
 seed = 1 #generate reproducable results
 
 mds_lrmsd = manifold.MDS(n_components=2, max_iter=3000, eps=1e-9, random_state=seed, 
-                         dissimilarity="precomputed", n_jobs=1)
+                         dissimilarity="precomputed", n_jobs = -1, verbose = True)
 
 T_dist_mds = mds_lrmsd.fit_transform(T_dist)
 
@@ -62,11 +62,11 @@ plt.savefig('MDS_Q1.png')
 ```
 Here we used a seed in order to be able to compare our results later in the project once we have applied the sketch-map method.
 
-You can find the full code relative to this question [here](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/code/Question1_Notebook.ipynb)
+You can find the full code relative to this question [here](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/code/Task1_Notebook.ipynb)
 
 We obtain the following plot: 
 
-![mds_plot](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/img/MDS_Q1.png)
+![mds_plot]()
 
 #### Question 2 We wish to analyze pairwise distances between selected conformations. Since N precludes using all pairs, propose two procedures to:
 
