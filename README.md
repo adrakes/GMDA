@@ -26,7 +26,7 @@ idx = np.argpartition(E_S, 10)
 # T is the corresponding matrix of coordinates
 T = S[idx[0:10],]
 ```
-We obtain [this](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/data/10_local_minima.txt) set T of protein
+We obtain [this](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/data/10_local_minima.txt) set T of proteins
 
 We run the SBL - Conformational Analysis package with set T using the following command line:
 ```
@@ -132,9 +132,11 @@ You can find the full code relative to this question [here](https://github.com/p
 #### Question 3 Using functionalities from the Molecular distances package from the SBL (http://sbl.inria.fr/doc/Molecular_distances-user-manual.html), produce a plot identical to [CTP11, Fig 1 (C)] for the sets S1 and S2.
 
 To complete this question we used the following procedure for each set S1 and S2: 
+
 1. Calculate the matrix of pairwise distances of the subset at hand. To do so we use:
-
-
+```
+sbl-conf-ensemble-analysis-lrmsd.exe --points-file /home/cloudera/Shared/10_local_minima.txt --pairwise-distances
+```
 We obtain a 1103 x 1103 matrix. For example, for S1 we obtain [this]() file
 
 2. Using the resulting 1103 x 1103 matrix as the input of the MDS, we compute 207 MDSs where the dimensionality of the resulting points (d) varies in [0,207]. To do so we implement the following python code:
