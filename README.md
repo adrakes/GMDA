@@ -103,8 +103,29 @@ Total: 11812.583215
 ```
 In order to find the Fermat-Weber points, we need to find the nearest neighbours of the centroids. To do so, we use the following code:
 ```python
-Include Flavie's code here
+from scipy.spatial import distance
+
+# distance between protein and the center of the affected cluster
+dist = np.zeros_like(S2clusters)
+for i in xrange (len(S2clusters)):
+    dist[i] = distance.euclidean(S[i],S2centers[S2clusters[i]])
+
+# choose the protein the more close to the center to maximize distance in S2
+S2 = np.zeros_like(S2centers)
+first_visit = np.zeros(S2centers.shape[0])
+min_dist = np.zeros(S2centers.shape[0])
+for k in xrange(S2centers.shape[0]):
+    for j in xrange(S.shape[0]):
+        if S2clusters[j] == k:
+            if first_visit[k] == 0:
+                S2[k] = S[j]
+                min_dist[k] = dist[j]
+                first_visit[k] = 1
+            else:
+                if dist[j] < dist[k]:
+                    S2[k] = S[j]
 ```
+You can find the full code relative to this question [here](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/code/Task2_Notebook.ipynb)
 
 #### Question 3 Using functionalities from the Molecular distances package from the SBL (http://sbl.inria.fr/doc/Molecular_distances-user-manual.html), produce a plot identical to [CTP11, Fig 1 (C)] for the sets S1 and S2.
 ```
