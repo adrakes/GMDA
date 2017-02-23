@@ -20,7 +20,7 @@ For this project we chose to use the pre-complied static SBL programs provided a
 
 In order to generate set T, we import set S and choose the 10 proteins with the lowest associated energies:
 ```python
-# find the index of the 10 lowest minima
+# find the index of the 10 lowest local minima
 idx = np.argpartition(E_S, 10)
 
 # T is the corresponding matrix of coordinates
@@ -66,19 +66,18 @@ You can find the full code relative to this question [here](https://github.com/p
 
 We obtain the following plot: 
 
-![mds_plot]()
+![mds_plot](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/img/MDS_Q1.png)
 
 #### Question 2 We wish to analyze pairwise distances between selected conformations. Since N precludes using all pairs, propose two procedures to:
 
-* select a subset S1 of n conformations by retaining the low energy conformations only. Hint: you may use topological persistence, see e.g. [CDM+15].
+#### Select a subset S1 of n conformations by retaining the low energy conformations only. Hint: you may use topological persistence, see e.g. [CDM+15].
 
-In order to generate S1 we used "Cluster Analysis" package from the SBL library
-
+In order to generate S1 we used the "Cluster Analysis" package from the SBL library, more specifically we applied a Morse theory based strategy with the program 'sbl-cluster-MTB-euclid.exe'. We call the following command:
 ```
 ./sbl-cluster-MTB-euclid.exe --points-file /home/cloudera/GMDA/hybrid-TRRT-BH-BLN__minima.txt --num-neighbors=20 --persistence-threshold=.1 --verbose 
 ```
 
-The algorithm ran for ~ 15 mins and produced ... 
+The algorithm ran for ~ 15 mins and produced [these](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/tree/master/data/S1) files with 1103 points.
 ``` 
 General Statistics:
 
@@ -87,13 +86,15 @@ Times elapsed for computations (in seconds):
 Total: 938.920263
 ```
 
-* select a subset S2 of n conformations maximizing the distances between the conformations selected. Hint: you may use the smart seeding procedure used in k-means.
+#### Select a subset S2 of n conformations maximizing the distances between the conformations selected. Hint: you may use the smart seeding procedure used in k-means.
+
+To create subset S2, we again use the "Cluster Analysis" package from SBL library, this time applying k-means with a non random/smart seeding procedure and k = 1103 in order to have S1 & S2 of equal size.
 
 We use the following command line: 
 ```
 ./sbl-cluster-k-means-euclid.exe --k-means-k 1103 --points-file /home/cloudera/GMDA/hybrid-TRRT-BH-BLN__minima.txt --k-means-selector=plusplus --verbose
 ```
-The algorithm ran for ~ 3h 15min and produced
+The algorithm ran for ~ 3h 15min and produced [these](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/tree/master/data/S2) files. 
 ```
 General Statistics:
 
@@ -101,7 +102,8 @@ Times elapsed for computations (in seconds):
 -- Cluster Engine: 11812.583215
 Total: 11812.583215
 ```
-In order to find the Fermat-Weber points, we need to find the nearest neighbours of the centroids. To do so, we use the following code:
+
+The resulting points are the centroids of the 1103 clusters. In order to find the Fermat-Weber points, we need to find the nearest neighbours of the centroids within their respective cluster. To do so, we use the following code:
 ```python
 from scipy.spatial import distance
 
@@ -128,16 +130,36 @@ for k in xrange(S2centers.shape[0]):
 You can find the full code relative to this question [here](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/code/Task2_Notebook.ipynb)
 
 #### Question 3 Using functionalities from the Molecular distances package from the SBL (http://sbl.inria.fr/doc/Molecular_distances-user-manual.html), produce a plot identical to [CTP11, Fig 1 (C)] for the sets S1 and S2.
-```
-./sbl-lrmsd-all-pairs.exe --points-file /home/cloudera/GMDA/S1/S1.txt --all-distances
-```
-```
-Number of loaded data: 1
--- Number of loaded points in ensemble: 1103
-Computing all lrmsd...
 
-0%   10   20   30   40   50   60   70   80   90   100%
-|----|----|----|----|----|----|----|----|----|----|
-***************************************************
+To complete this question we used the following procedure for each set S1 and S2: 
+1. Calculate the matrix of pairwise distances of the subset at hand. To do so we use:
+
+
+We obtain a 1103 x 1103 matrix. For example, for S1 we obtain [this]() file
+
+2. Using the resulting 1103 x 1103 matrix as the input of the MDS, we compute 207 MDSs where the dimensionality of the resulting points (d) varies in [0,207]. To do so we implement the following python code:
+```python
+from sklearn import manifold
+from sklearn.metrics import euclidean_distances
+from adjustText import adjust_text
+
+seed = 1
+
+for d in xrange(1,207):
+    mds_lrmsd = manifold.MDS(n_components=d, max_iter=200, eps=1e-9, random_state=seed, 
+                        dissimilarity="precomputed", n_jobs=1)
+    S1_dist_mds = mds_lrmsd.fit_transform(S1_dist) #S1_dist is the matrix of pairwise distances
+    
+    S1_dist_mds = np.insert(S1_dist_mds, [0], d, axis = 1)
+    filename = 'S1_Coord_%d.txt' % (d)
+    np.savetxt(filename ,S1_dist_mds,fmt='%.5f',delimiter=" ")
+```
+The code runs for ~ 1h 20mins and we obtain 207 matrices of dimension 1103 x d. You can find an example of such a matrix [here]()
+
+3. We compute the pairwise LRMSD distances of the points for each the 207 matrices using the "Molecular Distancs" package from SBL library. Specifically we call "sbl-lrmsd-all-pairs.exe" with:
 
 ```
+do ./sbl-lrmsd-all-pairs.exe --points-file /home/cloudera/Shared/Data/S2/Coord/S2_Coord_${d}.txt --all-distances; mv all_distances.txt ${d}_S2_dist.txt; done
+```
+
+
