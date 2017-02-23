@@ -89,8 +89,34 @@ Total: 938.920263
 
 * select a subset S2 of n conformations maximizing the distances between the conformations selected. Hint: you may use the smart seeding procedure used in k-means.
 
+We use the following command line: 
+```
+./sbl-cluster-k-means-euclid.exe --k-means-k 1103 --points-file /home/cloudera/GMDA/hybrid-TRRT-BH-BLN__minima.txt --k-means-selector=plusplus --verbose
+```
+The algorithm ran for ~ 3h 15min and produced
+```
+General Statistics:
+
+Times elapsed for computations (in seconds):
+-- Cluster Engine: 11812.583215
+Total: 11812.583215
+```
 In order to find the Fermat-Weber points, we need to find the nearest neighbours of the centroids. To do so, we use the following code:
 ```python
 Include Flavie's code here
+```
+
+#### Question 3 Using functionalities from the Molecular distances package from the SBL (http://sbl.inria.fr/doc/Molecular_distances-user-manual.html), produce a plot identical to [CTP11, Fig 1 (C)] for the sets S1 and S2.
+```
+./sbl-lrmsd-all-pairs.exe --points-file /home/cloudera/GMDA/S1/S1.txt --all-distances
+```
+```
+Number of loaded data: 1
+-- Number of loaded points in ensemble: 1103
+Computing all lrmsd...
+
+0%   10   20   30   40   50   60   70   80   90   100%
+|----|----|----|----|----|----|----|----|----|----|
+***************************************************
 
 ```
