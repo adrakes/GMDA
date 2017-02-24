@@ -13,12 +13,12 @@ use the least root mean square deviation http://sbl.inria.fr/doc/Molecular_dista
 html.
 
 N.B on workflow: 
-For this project we chose to use the pre-complied static SBL programs provided at http://sbl.inria.fr/applications rather than compiling the entire SBL library which happens to be quite challenging. Therefore we have run several different packages on a VM ubuntu which we combined with some python code to answer the given tasks.
+For this project we chose to use the pre-complied static SBL programs provided at http://sbl.inria.fr/applications rather than compiling the entire SBL library which happens to be quite challenging. Therefore we have run several different packages on a VM centOS which we combined with some python code to answer the given tasks.
 
 #### Question 1 
 #### An ensemble of N  10^6 local minima of the BLN69 protein model can be found at http://sbl.inria.fr/data-models. This set is denoted S in the sequel. To get familiar with this data set, select a reasonable number of local minima with low energy, and display them in 2D using multi-dimensional scaling (MDS). For example, you may focus on the 10 lowest local minina. This set is denoted T in the sequel.
 
-In order to generate set T, we import set S and choose the 10 proteins with the lowest associated energies:
+In order to generate set T, we import set S and choose the 10 conformations with the lowest associated energies:
 ```python
 # find the index of the 10 lowest local minima
 idx = np.argpartition(E_S, 10)
@@ -26,7 +26,7 @@ idx = np.argpartition(E_S, 10)
 # T is the corresponding matrix of coordinates
 T = S[idx[0:10],]
 ```
-We obtain [this](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/data/10_local_minima.txt) set T of proteins
+We obtain [this](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/data/10_local_minima.txt) set T of conformations
 
 We run the SBL - Conformational Analysis package with set T using the following command line:
 ```
@@ -103,7 +103,7 @@ Times elapsed for computations (in seconds):
 Total: 11812.583215
 ```
 
-The resulting points are the centroids of the 1103 clusters. In order to find the Fermat-Weber points, we need to find the nearest neighbours of the centroids within their respective cluster. To do so, we use the following code:
+The resulting points are the centroids of the 1103 clusters. In order to find the Fermat-Weber points (i.e. actual conformations), we need to find the nearest neighbours of the centroids within their respective cluster. To do so, we use the following code:
 ```python
 from scipy.spatial import distance
 
