@@ -3,7 +3,7 @@
  
 Description. Several strategies can be developed to deal with distance concentration phenomena. One of
 them, seen in class, consists in using suitable norms, and to project to lower dimensional spaces. Another one,
-proposed in [CTP11], consists in using a biasing potential which aims at focusing on the most informative
+proposed in [[CTP11](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/References.md), consists in using a biasing potential which aims at focusing on the most informative
 distances only. In this project, we aim at applying the procedure from [CTP11] to a different molecular data
 set, namely an ensemble of conformations of a protein model known as BLN69 [RDRC16]. In a nutshell,
 BLN69 is a linear chain of 69 beads; since each bead has 3 cartesian coordinates, a conformation is defined
