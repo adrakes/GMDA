@@ -68,7 +68,8 @@ We obtain the following plot:
 
 ![mds_plot](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/img/MDS_Q1.png)
 
-#### Question 2 We wish to analyze pairwise distances between selected conformations. Since N precludes using all pairs, propose two procedures to:
+#### Question 2 
+#### We wish to analyze pairwise distances between selected conformations. Since N precludes using all pairs, propose two procedures to:
 
 #### Select a subset S1 of n conformations by retaining the low energy conformations only. Hint: you may use topological persistence, see e.g. [CDM+15].
 
@@ -129,17 +130,18 @@ for k in xrange(S2centers.shape[0]):
 ```
 You can find the full code relative to this question [here](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/code/Task2_Notebook.ipynb)
 
-#### Question 3 Using functionalities from the Molecular distances package from the SBL (http://sbl.inria.fr/doc/Molecular_distances-user-manual.html), produce a plot identical to [CTP11, Fig 1 (C)] for the sets S1 and S2.
+#### Question 3 
+#### Using functionalities from the Molecular distances package from the SBL (http://sbl.inria.fr/doc/Molecular_distances-user-manual.html), produce a plot identical to [CTP11, Fig 1 (C)] for the sets S1 and S2.
 
 To complete this question we used the following procedure for each set S1 and S2: 
 
-1. Calculate the matrix of pairwise distances of the subset at hand. To do so we use:
+1 Calculate the matrix of pairwise distances of the subset at hand. To do so we use:
 ```
 sbl-conf-ensemble-analysis-lrmsd.exe --points-file /home/cloudera/Shared/10_local_minima.txt --pairwise-distances
 ```
 We obtain a 1103 x 1103 matrix. For example, for S1 we obtain [this]() file
 
-2. Using the resulting 1103 x 1103 matrix as the input of the MDS, we compute 207 MDSs where the dimensionality of the resulting points (d) varies in [0,207]. To do so we implement the following python code:
+2 Using the resulting 1103 x 1103 matrix as the input of the MDS, we compute 207 MDSs where the dimensionality of the resulting points (d) varies in [0,207]. To do so we implement the following python code:
 ```python
 from sklearn import manifold
 from sklearn.metrics import euclidean_distances
@@ -158,7 +160,7 @@ for d in xrange(1,207):
 ```
 The code runs for ~ 1h 20mins and we obtain 207 matrices of dimension 1103 x d. You can find an example of such a matrix [here]()
 
-3. We compute the pairwise LRMSD distances of the points for each the 207 matrices using the "Molecular Distancs" package from SBL library. Specifically we call "sbl-lrmsd-all-pairs.exe" with:
+3 We compute the pairwise LRMSD distances of the points for each the 207 matrices using the "Molecular Distancs" package from SBL library. Specifically we call "sbl-lrmsd-all-pairs.exe" with:
 
 ```
 do ./sbl-lrmsd-all-pairs.exe --points-file /home/cloudera/Shared/Data/S2/Coord/S2_Coord_${d}.txt --all-distances; mv all_distances.txt ${d}_S2_dist.txt; done
