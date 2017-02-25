@@ -185,7 +185,7 @@ We obtain these plots with a log y scaling
 
 ![Hist_Curve_S1](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/img/S1_all_logdist_curve.png)
 
-![Hist_Cruve_S2](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/img/S2_all_logdist_curve.png)
+![Hist_Cruve_S2]()
 
 #### Question 4 Analyse the distributions of pairwise distances for the sets S1 and S2. You may proceed in 2 directions:
 
