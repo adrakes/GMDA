@@ -189,14 +189,14 @@ We obtain these plots with a log y scaling
 
 #### Question 4 Analyse the distributions of pairwise distances for the sets S1 and S2. You may proceed in 2 directions:
 
-#### As in [CTP11], check whether portions of the distribution correspond to distances between random points drawn according to a Gaussian distribution.
+#### As in [CTP11](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/References.md), check whether portions of the distribution correspond to distances between random points drawn according to a Gaussian distribution.
 
 Understanding proximities and distances between data lying in high dimensional space is often not intuitive and difficult to apprehend. Therefore we cannot expect to understand the BLN69 conformations by projecting them in a 2D dimension and plotting them (like we did as an introduction in task 3 to catch a first glimpse of the data).
 A good way to know if it is possible to represent the data in a lower dimensionally space is to plot the histogram of distances between pairs of frames (task 3)
 
 To study the repartition of data in the plots obtained in task 3 we generate different objects:
 
-1 We create a matrix of 1103 individuals following an isotropic multivariate gaussian distribution of mean zero. For S1 we use a variance of 0.1 and for S2 we set the variance to 0.2 
+1.1 We create a matrix of 1103 individuals following an isotropic multivariate gaussian distribution of mean zero. For S1 we use a variance of 0.1 and for S2 we set the variance to 0.2 
 
 ```python
 # generate 1103 individuals following an isotropic multivariate gaussian with d = 207
@@ -213,10 +213,66 @@ x = np.insert(x, [0], 207, axis = 1)
 np.savetxt("gaussianS2.txt",x,delimiter=" ",fmt='%.5f')
 ```
 
-2 We compute the pairwise distances on this data (after adding a first column that indicate dimensionality) with the sbl-lrmsd-all-pairs.exe program. 
+1.2 We compute the pairwise distances on this data (after adding a first column that indicate dimensionality) with the sbl-lrmsd-all-pairs.exe program. 
 
 ```
-< for d in {1..2}; do ./sbl-lrmsd-all-pairs.exe --points-file /home/cloudera/Desktop/GMDA/DATA/gaussianS${d}.txt --all-distances; mv all_distances.txt gaussianS${d}_all_distances.txt; done
+for d in {1..2}; do ./sbl-lrmsd-all-pairs.exe --points-file /home/cloudera/Desktop/GMDA/DATA/gaussianS${d}.txt --all-distances; mv all_distances.txt gaussianS${d}_all_distances.txt; done
 ```
 
+1.3 And we add the histogram of pairwise distances obtained on the previous plots.
+```python
+sns.set_style("whitegrid")
+pylab.xlim([-0.2,3.5])
+sns.distplot(S1_all_dist[:,2], hist=False, color="red")
+sns.distplot(gaussianS1_all_dist[:,2], hist=False, color="black")
+sns.distplot(uniformS1_all_dist[:,2], hist=False, color="grey")
+plt.yscale('log')
+plt.title("Kernel density estimate of the distribution of S1 distances between pairs of frames")
+plt.xlabel('Distances')
+plt.ylabel('Frequences of distances')
+plt.show()
+```
+
+2.1 We create a matrix of 1103 individuals and 207 features with a uniform distribution. To choose the range of the distribution we take a look at the data in S1 an S2 and observe that most of the coordinates are between -3 and 3. So we try several variations around these values and retain for S1 a range of -2.3, 2.3 and for S2 a range of -2.5 and 2.5.
+
+```python
+x = np.random.uniform(-2.3,2.3,(1103,207))
+x = np.insert(x, [0], 207, axis = 1)
+np.savetxt("uniformS1.txt",x,delimiter=" ",fmt='%.5f')
+
+x = np.random.uniform(-2.4,2.4,(1103,207))
+x = np.insert(x, [0], 207, axis = 1)
+np.savetxt("uniformS2.txt",x,delimiter=" ",fmt='%.5f')
+```
+2.2 We then run the sbl-lrmsd-all-pairs.exe program on this data (after adding a first column that indicate dimensionality). 
+
+```for d in {1..2}; do ./sbl-lrmsd-all-pairs.exe --points-file /home/cloudera/Desktop/GMDA/DATA/uniformS${d}.txt --all-distances; mv all_distances.txt uniformS${d}_all_distances.txt; done
+```
+
+2.3 And we add the histogram of pairwise distances obtained on the previous plots (!REDUNDANT!)
+```python
+sns.set_style("whitegrid")
+pylab.xlim([-0.1,4])
+sns.distplot(S2_all_dist[:,2], hist=False, color="red")
+sns.distplot(gaussianS2_all_dist[:,2], hist=False, color="black")
+sns.distplot(uniformS2_all_dist[:,2], hist=False, color="grey")
+plt.yscale('log')
+plt.title("Kernel density estimate of the distribution of S1 distances between pairs of frames")
+plt.xlabel('Distances')
+plt.ylabel('Frequences of distances')
+plt.show()
+```
+
+We can see that for small distances and long range distances, the distribution is characteristic of gaussian and uniform distributed points in the 207-dimensional space. Hence there is only a part of the distances between pairs of frames that holds real information:
+* for values of distances around 1 (more or less depending on S1 or S2 set) the repartition of distances ressemble that of a isotropic Gaussian with a standard deviation of 0.5 distribution in the 207-dimensional space;
+* for the long range distances, it looks more like distances obtained from a uniform distribution of points in a 207-dimensional space.
+ 
+![Full_plot_S1]()
+![Full_plot_S2]()
+
+We have shown that certain features of the distribution of distances are characteristics of randomly or uniformly distributed points in the full dimensional space. Therefore, not all distances are informative and we deduce from our plots that the interesting distances to be studied are those:
+- between 1.5 and 3 for S1
+- between 1.7 and 2.5 for S2
+
+#### Following the distance concentration phenomenon studied in class, you may check whether some concentration phenomenon is observed.
 
