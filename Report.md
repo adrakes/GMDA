@@ -151,7 +151,7 @@ We then want to study the distribution of distances between pairs of frames in a
 
 First we calculate the pairwise distance using the "Molecular Distances" package from the SBL library. More specifically we use sbl-lrmsd-all-pairs.exe program with:
 ```
-./sbl-lrmsd-all-pairs.exe --points-file /home/cloudera/Shared/S1/S1.txt --all-distances
+for d in {1..2}; do ./sbl-lrmsd-all-pairs.exe --points-file /home/cloudera/Desktop/GMDA/DATA/S${d}.txt --all-distances; mv all_distances.txt S${d}_dist.txt; done
 ```
 We obtain S1_pairwise_dist & S2_pairwise_dist the 607740 x 3 matrices of pairwise distances where each line represents a combination of frames and the distance associated.
 
@@ -178,7 +178,7 @@ plt.ylabel('Frequences of distances')
 #plt.show()
 plt.savefig('S1_all_logdist_curve.png')
 ```
-You can find the full code relative to this task [here]().
+You can find the full code relative to this task [here](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/code/Task3_Notebook.ipynb).
 
 We obtain these plots with a log y scaling
 
@@ -190,9 +190,9 @@ We obtain these plots with a log y scaling
 
 #### As in [CTP11], check whether portions of the distribution correspond to distances between random points drawn according to a Gaussian distribution.
 
+Understanding proximities and distances between data lying in high dimensional space is often not intuitive and difficult to apprehend. Therefore we cannot expect to understand the BLN69 conformations by projecting them in a 2D dimension and plotting them (like we did as an introduction in task 3 to catch a first glimpse of the data).
+A good way to know if it is possible to represent the data in a lower dimensionally space is to plot the histogram of distances between pairs of frames (task 3)
 
-```
-do ./sbl-lrmsd-all-pairs.exe --points-file /home/cloudera/Shared/Data/S2/Coord/S2_Coord_${d}.txt --all-distances; mv all_distances.txt ${d}_S2_dist.txt; done
-```
+To study the repartition of data in the plots obtained in task 3 we generate different objects:
 
-
+1 We create a matrix of 1103 individuals following an isotropic gaussian distribution of mean zero. For the S1 set we use a variance of 0.1 and for the S2 set the variance to 0.2 
