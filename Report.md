@@ -116,6 +116,7 @@ for i in xrange (len(S2clusters)):
 # choose the protein the more close to the center to maximize distance in S2
 S2 = np.zeros_like(S2centers)
 first_visit = np.zeros(S2centers.shape[0])
+
 min_dist = np.zeros(S2centers.shape[0])
 for k in xrange(S2centers.shape[0]):
     for j in xrange(S.shape[0]):
@@ -195,4 +196,27 @@ A good way to know if it is possible to represent the data in a lower dimensiona
 
 To study the repartition of data in the plots obtained in task 3 we generate different objects:
 
-1 We create a matrix of 1103 individuals following an isotropic gaussian distribution of mean zero. For the S1 set we use a variance of 0.1 and for the S2 set the variance to 0.2 
+1 We create a matrix of 1103 individuals following an isotropic multivariate gaussian distribution of mean zero. For S1 we use a variance of 0.1 and for S2 we set the variance to 0.2 
+
+```python
+# generate 1103 individuals following an isotropic multivariate gaussian with d = 207
+mean = np.zeros(207)
+
+cov = 0.1*np.eye(207)
+x = np.random.multivariate_normal(mean, cov,1103)
+x = np.insert(x, [0], 207, axis = 1)
+np.savetxt("gaussianS1.txt",x,delimiter=" ",fmt='%.5f')
+
+cov = 0.2*np.eye(207)
+x = np.random.multivariate_normal(mean, cov,1103)
+x = np.insert(x, [0], 207, axis = 1)
+np.savetxt("gaussianS2.txt",x,delimiter=" ",fmt='%.5f')
+```
+
+2 We compute the pairwise distances on this data (after adding a first column that indicate dimensionality) with the sbl-lrmsd-all-pairs.exe program. 
+
+```
+< for d in {1..2}; do ./sbl-lrmsd-all-pairs.exe --points-file /home/cloudera/Desktop/GMDA/DATA/gaussianS${d}.txt --all-distances; mv all_distances.txt gaussianS${d}_all_distances.txt; done
+```
+
+
