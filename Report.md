@@ -3,9 +3,9 @@
  
 Description. Several strategies can be developed to deal with distance concentration phenomena. One of
 them, seen in class, consists in using suitable norms, and to project to lower dimensional spaces. Another one,
-proposed in [[CTP11](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/References.md), consists in using a biasing potential which aims at focusing on the most informative
-distances only. In this project, we aim at applying the procedure from [CTP11] to a different molecular data
-set, namely an ensemble of conformations of a protein model known as BLN69 [RDRC16]. In a nutshell,
+proposed in [CTP11](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/References.md), consists in using a biasing potential which aims at focusing on the most informative
+distances only. In this project, we aim at applying the procedure from [CTP11](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/References.md) to a different molecular data
+set, namely an ensemble of conformations of a protein model known as BLN69 [RDRC16](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/References.md). In a nutshell,
 BLN69 is a linear chain of 69 beads; since each bead has 3 cartesian coordinates, a conformation is defined
 by a point in dimension d = 3 x 69 = 207. To each conformation, one can also associate an energy, which will
 be given along with the conformations. Finally, to measure the distance between two conformations, we shall
@@ -71,7 +71,7 @@ We obtain the following plot:
 #### Question 2 
 #### We wish to analyze pairwise distances between selected conformations. Since N precludes using all pairs, propose two procedures to:
 
-#### Select a subset S1 of n conformations by retaining the low energy conformations only. Hint: you may use topological persistence, see e.g. [CDM+15].
+#### Select a subset S1 of n conformations by retaining the low energy conformations only. Hint: you may use topological persistence, see e.g. [CDM+15](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/References.md).
 
 In order to generate S1 we used the "Cluster Analysis" package from the SBL library, more specifically we applied a Morse theory based strategy with the program 'sbl-cluster-MTB-euclid.exe'. We call the following command:
 ```
@@ -131,36 +131,65 @@ for k in xrange(S2centers.shape[0]):
 You can find the full code relative to this question [here](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/code/Task2_Notebook.ipynb)
 
 #### Question 3 
-#### Using functionalities from the Molecular distances package from the SBL (http://sbl.inria.fr/doc/Molecular_distances-user-manual.html), produce a plot identical to [CTP11, Fig 1 (C)] for the sets S1 and S2.
+#### Using functionalities from the Molecular distances package from the SBL (http://sbl.inria.fr/doc/Molecular_distances-user-manual.html), produce a plot identical to [CTP11, Fig 1 (C)](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/References.md) for the sets S1 and S2.
 
-To complete this question we used the following procedure for each set S1 and S2: 
-
-1 Calculate the matrix of pairwise distances of the subset at hand. To do so we use:
+To get a first idea of the distributions of distances between pairs of frames in S1 and S2, we calculate the matrix of distances with sbl-conf-ensemble-analysis.exe program of the SBL library: 
 ```
-sbl-conf-ensemble-analysis-lrmsd.exe --points-file /home/cloudera/Shared/10_local_minima.txt --pairwise-distances
+./sbl-conf-ensemble-analysis-lrmsd.exe --points-file /home/cloudera/Shared/S1/S1.txt --pairwise-distances
 ```
-We obtain a 1103 x 1103 matrix. For example, for S1 we obtain [this]() file
 
-2 Using the resulting 1103 x 1103 matrix as the input of the MDS, we compute 207 MDSs where the dimensionality of the resulting points (d) varies in [0,207]. To do so we implement the following python code:
+We obtain S1_dist_matrix and S2_dist_matrix, the 1103 x 1103 matrices of pairwise distances according the LRMSD. We then display the conformations from both sets in 2D using multi-dimensional scaling as in question 1.
+
+You can find the code relative to this step [here]()
+
+These plots clearly show a big concentration with some spare points around.
+
+![MDS_S1](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/img/MDS_S1.png)
+![MDS_S2](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/img/MDS_S2.png)
+
+We then want to study the distribution of distances between pairs of frames in a more accurate way. To achieved that goal we plot the histograms of pairwise distances between pairs of frames for both S1 & S2. 
+
+First we calculate the pairwise distance using the "Molecular Distances" package from the SBL library. More specifically we use sbl-lrmsd-all-pairs.exe program with:
+```
+./sbl-lrmsd-all-pairs.exe --points-file /home/cloudera/Shared/S1/S1.txt --all-distances
+```
+We obtain S1_pairwise_dist & S2_pairwise_dist the 607740 x 3 matrices of pairwise distances where each line represents a combination of frames and the distance associated.
+
+We then plot the histograms of distances between pairs of frames:
 ```python
-from sklearn import manifold
-from sklearn.metrics import euclidean_distances
-from adjustText import adjust_text
 
-seed = 1
+# log histogram
+pylab.xlim([0,3.5])
+h_log = plt.hist(S1_dist[:,2], bins=200, color='blue', histtype='stepfilled', log='False')
+plt.yscale('log')
+plt.title("Log-distribution of distances between pairs of frames - S1")
+plt.xlabel('Distances')
+plt.ylabel('Frequences of distances')
+#plt.show()
+plt.savefig('S1_all_logdist.png')
 
-for d in xrange(1,207):
-    mds_lrmsd = manifold.MDS(n_components=d, max_iter=200, eps=1e-9, random_state=seed, 
-                        dissimilarity="precomputed", n_jobs=1)
-    S1_dist_mds = mds_lrmsd.fit_transform(S1_dist) #S1_dist is the matrix of pairwise distances
-    
-    S1_dist_mds = np.insert(S1_dist_mds, [0], d, axis = 1)
-    filename = 'S1_Coord_%d.txt' % (d)
-    np.savetxt(filename ,S1_dist_mds,fmt='%.5f',delimiter=" ")
+# log-histogram curve
+pylab.xlim([0,3.5])
+sns.distplot(S1_dist[:,2], hist=False)
+plt.yscale('log')
+plt.title("Histogram curve for the log-distribution of distances between pairs of frames - S1")
+plt.xlabel('Distances')
+plt.ylabel('Frequences of distances')
+#plt.show()
+plt.savefig('S1_all_logdist_curve.png')
 ```
-The code runs for ~ 1h 20mins and we obtain 207 matrices of dimension 1103 x d. You can find an example of such a matrix [here]()
+You can find the full code relative to this task [here]().
 
-3 We compute the pairwise LRMSD distances of the points for each the 207 matrices using the "Molecular Distancs" package from SBL library. Specifically we call "sbl-lrmsd-all-pairs.exe" with:
+We obtain these plots with a log y scaling
+
+![Hist_Curve_S1](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/img/S1_all_logdist_curve.png)
+
+![Hist_Cruve_S2](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/img/S2_all_logdist_curve.png)
+
+#### Question 4 Analyse the distributions of pairwise distances for the sets S1 and S2. You may proceed in 2 directions:
+
+#### As in [CTP11], check whether portions of the distribution correspond to distances between random points drawn according to a Gaussian distribution.
+
 
 ```
 do ./sbl-lrmsd-all-pairs.exe --points-file /home/cloudera/Shared/Data/S2/Coord/S2_Coord_${d}.txt --all-distances; mv all_distances.txt ${d}_S2_dist.txt; done
