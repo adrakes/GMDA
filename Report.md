@@ -1,5 +1,7 @@
 # Geometric-Methods-in-Data-Analysis
 ## Circumventing the Distance Concentration Phenomena
+
+Flavie Vampouille - Paul Vercoustre
  
 Description. Several strategies can be developed to deal with distance concentration phenomena. One of
 them, seen in class, consists in using suitable norms, and to project to lower dimensional spaces. Another one,
@@ -249,7 +251,7 @@ np.savetxt("uniformS2.txt",x,delimiter=" ",fmt='%.5f')
 ```for d in {1..2}; do ./sbl-lrmsd-all-pairs.exe --points-file /home/cloudera/Desktop/GMDA/DATA/uniformS${d}.txt --all-distances; mv all_distances.txt uniformS${d}_all_distances.txt; done
 ```
 
-2.3 And we add the histogram of pairwise distances obtained on the previous plots (!REDUNDANT!)
+2.3 And we add the histogram of pairwise distances obtained on the previous plots
 ```python
 sns.set_style("whitegrid")
 pylab.xlim([-0.1,4])
@@ -267,12 +269,12 @@ We can see that for small distances and long range distances, the distribution i
 * for values of distances around 1 (more or less depending on S1 or S2 set) the repartition of distances ressemble that of a isotropic Gaussian with a standard deviation of 0.5 distribution in the 207-dimensional space;
 * for the long range distances, it looks more like distances obtained from a uniform distribution of points in a 207-dimensional space.
  
-![Full_plot_S1]()
-![Full_plot_S2]()
+![Full_plot_S1](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/img/S1_curve_task4.png)
+![Full_plot_S2](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/img/S2_curves_task4.png)
 
 We have shown that certain features of the distribution of distances are characteristics of randomly or uniformly distributed points in the full dimensional space. Therefore, not all distances are informative and we deduce from our plots that the interesting distances to be studied are those:
 - between 1.5 and 3 for S1
 - between 1.7 and 2.5 for S2
 
-#### Following the distance concentration phenomenon studied in class, you may check whether some concentration phenomenon is observed.
+We can find the full code relative to this task [here](https://github.com/paulvercoustre/Geometric-Methods-in-Data-Analysis/blob/master/code/Task4_Notebook.ipynb)
 
